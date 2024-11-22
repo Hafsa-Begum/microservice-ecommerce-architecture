@@ -22,7 +22,7 @@ app.use((err,req, res, next)=>{
 })
 
 const port = process.env.PORT || 4002
-const serviceName = process.env.SERVICE_NAME || 'inventory-service'
+const serviceName = process.env.SERVICE_NAME || 'Inventory-Service'
 
 app.listen(port,()=>{
     console.log(`${serviceName} is running on port ${port}`)
