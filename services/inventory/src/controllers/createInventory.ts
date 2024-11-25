@@ -2,16 +2,17 @@ import { Request, Response, NextFunction } from "express";
 import prisma from "@/prisma";
 import { InventoryCreateDTOSchema } from "@/schemas";
 
-
-const createInventory = async( 
-    req: Request, 
-    res: Response, 
-    next: NextFunction
+type AsyncRequestHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>;
+const createInventory: AsyncRequestHandler = async( 
+    req, 
+    res,
+    next
     )=>{
     try {
         const parsedBody = InventoryCreateDTOSchema.safeParse(req.body)
         if(!parsedBody.success){
-            return res.status(400).json({error: parsedBody.error.errors})
+            res.status(400).json({error: parsedBody.error.errors})
+            return;
         }
 
         const inventory = await prisma.inventory.create({
@@ -31,7 +32,7 @@ const createInventory = async(
 
             }
         })
-        return res.status(201).json(inventory)
+        res.status(201).json(inventory)
     } catch (error) {
         next(error)
     }
