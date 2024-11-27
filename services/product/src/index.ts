@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import morgan from 'morgan'
+import { createProduct, getProductDetails, getProducts, updateProduct } from './controllers';
 
 dotenv.config();
 
@@ -17,6 +18,11 @@ app.get('/health', (req, res)=>{
 })
 
 //routes
+app.put('/products/:id', updateProduct)
+app.get('/products/:id', getProductDetails)
+app.get('/products', getProducts)
+app.post('/products', createProduct)
+
 
 app.use((_req, res)=>{
     res.status(404).json({message:'Not found'})
