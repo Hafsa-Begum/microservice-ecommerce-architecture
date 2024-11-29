@@ -3,15 +3,28 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import morgan from 'morgan'
 import { configureRoutes } from './utils';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(morgan('dev'))
+// request logger
+app.use(morgan('dev'));
+//security middleware
+app.use(helmet());
 
+const limiter = rateLimit({
+    windowMs: 15*60*1000 , //15minutes
+    max: 5, //limit each ip to 100 request per windowMs
+    handler:(_req, res)=>{
+        res.status(429).json({message: 'Too many requests, please try again later.'})
+    },
+})
 
+app.use('/api', limiter);
 
 app.get('/health', (req, res)=>{
     res.status(200).json({status:'Up'})
