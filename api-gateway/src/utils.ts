@@ -15,12 +15,12 @@ export const createHandler = (hostname: string, path: string, method: string)=>{
                 url,
                 data:req.body,
                 headers:{
-                    origin: 'http://localhost:8081',
-                    'x-user-id': req.headers['x-user-id'] || '',
-                    'x-user-email': req.headers['x-user-email'] || '',
-                    'x-user-name': req.headers['x-user-name'] || '',
-                    'x-user-role': req.headers['x-user-role'] || '',
-                    'user-agent': req.headers['user-agent']
+                    origin: `http://localhost:${process.env.PORT}`,
+                    // 'x-user-id': req.headers['x-user-id'] || '',
+                    // 'x-user-email': req.headers['x-user-email'] || '',
+                    // 'x-user-name': req.headers['x-user-name'] || '',
+                    // 'x-user-role': req.headers['x-user-role'] || '',
+                    // 'user-agent': req.headers['user-agent']
                 }
             });
             res.json(data)

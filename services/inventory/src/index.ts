@@ -23,6 +23,19 @@ app.get('/health', (req, res)=>{
     res.status(200).json({status:'Up'})
 })
 
+//control access to api via origin
+app.use((req, res, next) => {
+	const allowedOrigins = ['http://localhost:8082', 'http://127.0.0.1:8082'];
+	const origin = req.headers.origin || '';
+
+	if (allowedOrigins.includes(origin)) {
+		res.setHeader('Access-Control-Allow-Origin', origin);
+		next();
+	} else {
+		res.status(403).json({ message: 'Forbidden' });
+	}
+});
+
 //routes
 app.get('/inventories/:id/details', getInventoryDetails)
 app.get('/inventories/:id', getInventoryById)
