@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import morgan from 'morgan'
+import { createUser, getByUserId } from './controllers';
 
 dotenv.config();
 
@@ -30,6 +31,8 @@ app.get('/health', (req, res)=>{
 // });
 
 //routes
+app.get('/users/:id', getByUserId);
+app.post('/users', createUser);
 
 app.use((_req, res)=>{
     res.status(404).json({message:'Not found'})
