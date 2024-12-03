@@ -40,7 +40,7 @@ app.use((err,_req, res, _next)=>{
     res.status(500).json({message:'Internal server error'})
 })
 
-const port = process.env.PORT || 4004
+const port = process.env.PORT || 4003
 const serviceName = process.env.SERVICE_NAME || 'Auth-Service'
 
 app.listen(port,()=>{
