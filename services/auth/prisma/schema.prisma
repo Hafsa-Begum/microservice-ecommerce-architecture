@@ -75,7 +75,7 @@ model VerificationCode{
   status VerificationStatus @default(PENDING)
   code String
   type VerificationCodeType @default(ACCOUNT_ACTIVATION)
-  issuedAt DateTime
+  issuedAt DateTime @default(now())
   expiredAt DateTime
   verifiedAt DateTime?
 }

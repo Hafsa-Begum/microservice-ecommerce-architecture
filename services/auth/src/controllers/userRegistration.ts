@@ -3,7 +3,21 @@ import { UserCreateSchema } from '@/schemas';
 import {Request, Response, NextFunction} from 'express'
 import bcrypt from 'bcryptjs'
 import axios from 'axios';
-import { USER_SERVICE } from '@/config';
+import { EMAIL_SERVICE, USER_SERVICE } from '@/config';
+
+const generateVerificationCode = () => {
+	// Get current timestamp in milliseconds
+	const timestamp = new Date().getTime().toString();
+
+	// Generate a random 2-digit number
+	const randomNum = Math.floor(10 + Math.random() * 90); // Ensures 2-digit random number
+
+	// Combine timestamp and random number and extract last 5 digits
+	let code = (timestamp + randomNum).slice(-5);
+
+	return code; //
+};
+
 
 type AsyncRequestHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>;
 
@@ -54,7 +68,27 @@ const userRegistration: AsyncRequestHandler = async(req, res, next)=>{
             email: user.email
         })
 
-        res.status(201).json(user);
+        // generate verification code
+		const code = generateVerificationCode();
+		await prisma.verificationCode.create({
+            data:{
+                userId: user.id,
+                code,
+                expiredAt: new Date(Date.now() + 1000 * 60 * 60 * 24)
+            }
+        });
+
+		// send verification email
+		await axios.post(`${EMAIL_SERVICE}/emails/send`, {
+			recipient: user.email,
+			subject: 'Email Verification',
+			body: `Your verification code is ${code}`,
+			source: 'user-registration',
+		});
+        res.status(201).json({
+            message: 'User created. Check your email for verification code',
+            user
+        });
         return;
     } catch (error) {
         next(error)

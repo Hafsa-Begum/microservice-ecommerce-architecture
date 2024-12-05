@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "VerificationCode" ALTER COLUMN "issuedAt" SET DEFAULT CURRENT_TIMESTAMP;
