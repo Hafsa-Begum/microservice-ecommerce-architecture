@@ -77,14 +77,14 @@ const userRegistration: AsyncRequestHandler = async(req, res, next)=>{
                 expiredAt: new Date(Date.now() + 1000 * 60 * 60 * 24)
             }
         });
-
+        console.log("verification code:", code)
 		// send verification email
-		await axios.post(`${EMAIL_SERVICE}/emails/send`, {
-			recipient: user.email,
-			subject: 'Email Verification',
-			body: `Your verification code is ${code}`,
-			source: 'user-registration',
-		});
+		// await axios.post(`${EMAIL_SERVICE}/emails/send`, {
+		// 	recipient: user.email,
+		// 	subject: 'Email Verification',
+		// 	body: `Your verification code is ${code}`,
+		// 	source: 'user-registration',
+		// });
         res.status(201).json({
             message: 'User created. Check your email for verification code',
             user

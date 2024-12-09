@@ -6,4 +6,4 @@ export const transporter = nodemailer.createTransport({
 	port: parseInt(process.env.SMTP_PORT || '1025'),
 });
 
-export const defaultSender = process.env.DEFAULT_SENDER_EMAIL || 'admin@example.com'
+export const defaultSender = process.env.DEFAULT_SENDER_EMAIL || 'hafsagood@gmail.com'

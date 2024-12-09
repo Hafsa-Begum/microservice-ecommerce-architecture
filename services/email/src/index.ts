@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import morgan from 'morgan'
 import { getEmails, sendEmail } from './controllers';
+import { transporter } from './config';
 
 dotenv.config();
 
@@ -41,6 +42,21 @@ app.use((err,_req, res, _next)=>{
     console.error(err.stack)
     res.status(500).json({message:'Internal server error'})
 })
+
+const emailOptions = {
+    from: process.env.DEFAULT_SENDER_EMAIL || 'test@example.com',
+    to: 'recipient@example.com',
+    subject: 'Test Email',
+    text: 'Hello from MailHog!',
+  };
+  
+  transporter.sendMail(emailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+    } else {
+      console.log('Email sent successfully:', info.response);
+    }
+  });
 
 const port = process.env.PORT || 4005
 const serviceName = process.env.SERVICE_NAME || 'Email-Service'

@@ -57,12 +57,12 @@ const verifyEmail:AsyncRequestHandler = async(req, res, next)=>{
             }
         })
         //send success email
-        await axios.post(`${EMAIL_SERVICE}/emails/send`,{
-            recipient: user.email,
-            subject: 'Email Verified',
-            body: 'Your email has been verified successfully.',
-            source: 'verify-email'
-        })
+        // await axios.post(`${EMAIL_SERVICE}/emails/send`,{
+        //     recipient: user.email,
+        //     subject: 'Email Verified',
+        //     body: 'Your email has been verified successfully.',
+        //     source: 'verify-email'
+        // })
         res.status(200).json({
             message: 'Email verified successfully.'
         });
